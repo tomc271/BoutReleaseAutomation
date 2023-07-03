@@ -4,7 +4,7 @@ import re
 
 def get_filepath(filepath):
 
-    return Path("C:\\git\\BOUT-dev") / filepath
+    return Path(r"C:\git\BOUT-dev") / filepath
 
 
 def update_version_number_in_files(new_version_number):
@@ -13,7 +13,7 @@ def update_version_number_in_files(new_version_number):
     with open(filepath, "r", encoding='UTF-8') as file:
         file_contents = file.read()
 
-        pattern = "AC_INIT\\(\\[BOUT\\+\\+\\],\\[(\\d\\.\\d\\.\\d)\\]"
+        pattern = r"AC_INIT\(\[BOUT\+\+\],\[(\d\.\d\.\d)\]"
         replacement = "AC_INIT([BOUT++],[" + new_version_number + "]"
         updated_text = re.sub(pattern, replacement, file_contents)
     with open(filepath, "w", encoding='UTF-8') as file:
@@ -21,4 +21,5 @@ def update_version_number_in_files(new_version_number):
 
 
 if __name__ == '__main__':
+
     update_version_number_in_files("6.1.2")
