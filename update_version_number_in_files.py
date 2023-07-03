@@ -23,8 +23,10 @@ def update_version_number_in_files(new_version_number, files_with_regex_patterns
 
 if __name__ == '__main__':
 
+    new_version_number = "6.1.2"
+
     files_with_regex_patterns = {
         "configure.ac": r"AC_INIT\(\[BOUT\+\+\],\[(\d\.\d\.\d)\]"
     }
 
-    update_version_number_in_files("6.1.2", files_with_regex_patterns)
+    update_version_number_in_files(new_version_number, files_with_regex_patterns)
