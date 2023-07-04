@@ -20,7 +20,7 @@ def update_version_number_in_file(full_filepath, pattern, new_version_number):
 def bump_version_numbers():
 
     new_version_number = "6.1.2"
-    short_version_number = "6.1"
+    short_version_number = new_version_number[0:3]
     bout_next_version_number = "6.2.0"
 
     update_version_number_in_file(
