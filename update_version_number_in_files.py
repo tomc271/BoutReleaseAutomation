@@ -33,3 +33,7 @@ if __name__ == '__main__':
 
     update_version_number_in_file(
         get_full_filepath("manual/sphinx/conf.py"), r"(?<=release = \")\d\.\d\.\d(?=\")", new_version_number)
+
+    update_version_number_in_file(
+        get_full_filepath("manual/doxygen/Doxyfile_readthedocs"), r"(?<=PROJECT_NUMBER         = )\d\.\d\.\d",
+        new_version_number)
