@@ -20,15 +20,16 @@ def update_version_number_in_file(full_filepath, pattern, new_version_number):
 if __name__ == '__main__':
 
     new_version_number = "6.1.2"
+    short_version_number = "6.1"
 
-    files_with_regex_patterns = {
-        "configure.ac": r"(?<=AC_INIT\(\[BOUT\+\+\],\[)\d\.\d\.\d(?=\])",
-        "CITATION.cff": r"(?<=version: )\d\.\d\.\d"
-    }
+    update_version_number_in_file(
+        get_full_filepath("configure.ac"), r"(?<=AC_INIT\(\[BOUT\+\+\],\[)\d\.\d\.\d(?=\])", new_version_number)
 
-    for filepath in files_with_regex_patterns:
+    update_version_number_in_file(
+        get_full_filepath("CITATION.cff"), r"(?<=version: )\d\.\d\.\d", new_version_number)
 
-        pattern = files_with_regex_patterns[filepath]
-        full_filepath = get_full_filepath(filepath)
+    update_version_number_in_file(
+        get_full_filepath("manual/sphinx/conf.py"), r"(?<=version = \")\d\.\d(?=\")", short_version_number)
 
-        update_version_number_in_file(full_filepath, pattern, new_version_number)
+    update_version_number_in_file(
+        get_full_filepath("manual/sphinx/conf.py"), r"(?<=release = \")\d\.\d\.\d(?=\")", new_version_number)
