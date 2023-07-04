@@ -17,13 +17,12 @@ def update_version_number_in_file(full_filepath, pattern, new_version_number):
         file.write(updated_text)
 
 
-def bump_version_numbers():
+def bump_version_numbers(new_version_number):
 
-    new_version_number = "6.1.0"
     short_version_number = new_version_number[0:3]
     new_minor_version_number = str(int(new_version_number[2]) + 1)
     bout_next_version_number = re.sub(r"(?<=\d\.)\d(?=\.\d)", new_minor_version_number, new_version_number)
-    
+
     update_version_number_in_file(
         get_full_filepath("configure.ac"), r"(?<=AC_INIT\(\[BOUT\+\+\],\[)\d\.\d\.\d(?=\])", new_version_number)
 
@@ -62,4 +61,4 @@ def bump_version_numbers():
 
 if __name__ == '__main__':
 
-    bump_version_numbers()
+    bump_version_numbers(new_version_number="6.1.0")
