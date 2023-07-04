@@ -49,3 +49,11 @@ if __name__ == '__main__':
     update_version_number_in_file(
         get_full_filepath("CMakeLists.txt"), r"(?<=set\(_bout_next_version \")\d\.\d\.\d(?=\"\))",
         bout_next_version_number)
+
+    update_version_number_in_file(
+        get_full_filepath("tools/pylib/_boutpp_build/backend.py"), r"(?<=_bout_previous_version = \"v)\d\.\d\.\d(?=\")",
+        new_version_number)
+
+    update_version_number_in_file(
+        get_full_filepath("tools/pylib/_boutpp_build/backend.py"), r"(?<=_bout_next_version = \"v)\d\.\d\.\d(?=\")",
+        bout_next_version_number)
