@@ -21,6 +21,7 @@ if __name__ == '__main__':
 
     new_version_number = "6.1.2"
     short_version_number = "6.1"
+    bout_next_version_number = "6.2.0"
 
     update_version_number_in_file(
         get_full_filepath("configure.ac"), r"(?<=AC_INIT\(\[BOUT\+\+\],\[)\d\.\d\.\d(?=\])", new_version_number)
@@ -40,3 +41,11 @@ if __name__ == '__main__':
 
     update_version_number_in_file(
         get_full_filepath("manual/doxygen/Doxyfile"), r"(?<=PROJECT_NUMBER         = )\d\.\d\.\d", new_version_number)
+
+    update_version_number_in_file(
+        get_full_filepath("CMakeLists.txt"), r"(?<=set\(_bout_previous_version \"v)\d\.\d\.\d(?=\"\))",
+        new_version_number)
+
+    update_version_number_in_file(
+        get_full_filepath("CMakeLists.txt"), r"(?<=set\(_bout_next_version \")\d\.\d\.\d(?=\"\))",
+        bout_next_version_number)
