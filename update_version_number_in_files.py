@@ -17,7 +17,7 @@ def update_version_number_in_file(full_filepath, pattern, new_version_number):
         file.write(updated_text)
 
 
-if __name__ == '__main__':
+def bump_version_numbers():
 
     new_version_number = "6.1.2"
     short_version_number = "6.1"
@@ -57,3 +57,8 @@ if __name__ == '__main__':
     update_version_number_in_file(
         get_full_filepath("tools/pylib/_boutpp_build/backend.py"), r"(?<=_bout_next_version = \"v)\d\.\d\.\d(?=\")",
         bout_next_version_number)
+
+
+if __name__ == '__main__':
+
+    bump_version_numbers()
