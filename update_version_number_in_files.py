@@ -7,7 +7,7 @@ def get_full_filepath(filepath):
     return Path(r"C:\git\BOUT-dev") / filepath
 
 
-def update_version_number_in_file(new_version_number, pattern, full_filepath):
+def update_version_number_in_file(full_filepath, pattern, new_version_number):
 
     with open(full_filepath, "r", encoding='UTF-8') as file:
         file_contents = file.read()
@@ -31,4 +31,4 @@ if __name__ == '__main__':
         pattern = files_with_regex_patterns[filepath]
         full_filepath = get_full_filepath(filepath)
 
-        update_version_number_in_file(new_version_number, pattern, full_filepath)
+        update_version_number_in_file(full_filepath, pattern, new_version_number)
