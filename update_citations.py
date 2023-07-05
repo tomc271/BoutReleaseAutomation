@@ -19,7 +19,7 @@ authors_from_git = ["A Allen", "Aaron Fisher", "Adam Dempsey", "Andrew Allen", "
 
 
 def parse_cff_file(filename):
-    with open(filename, "r") as stream:
+    with open(filename, "r", encoding='UTF-8') as stream:
         try:
             return yaml.safe_load(stream)
         except yaml.YAMLError as exc:
