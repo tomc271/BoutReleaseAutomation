@@ -47,6 +47,10 @@ def author_found_in_existing_authors(author, existing_authors):
                 return True
             if match[0][0].casefold() == given_names[0].casefold():  # The first initial also matches
                 return True
+        matches = [n for n in existing_author_names if n[0].casefold() == surname.casefold()]  # Surname first
+        for match in matches:
+            if match[0].casefold() == surname.casefold():
+                return True
 
     except ValueError as value_error:  # Only a single name, so could not split()
 
@@ -65,6 +69,11 @@ def author_found_in_existing_authors(author, existing_authors):
             if len(combined_name_matches) > 0:
                 return True
 
+            combined_name_reversed_matches = [n for n in existing_author_names if
+                                              (n[1] + n[0]).casefold() == author.casefold()]
+            if len(combined_name_reversed_matches) > 0:
+                return True
+    
     return False
 
 
