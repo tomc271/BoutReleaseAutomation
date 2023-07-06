@@ -36,6 +36,68 @@ def get_authors_from_cff_file():
         print("Failed to find section:", key_error, "in", filename)
 
 
+def last_name_matches_surname_and_first_name_or_first_letter_matches_given_name(existing_author_names, last_name,
+                                                                                first_name):
+    matches = [n for n in existing_author_names if n[1].casefold() == last_name.casefold()]  # Last name matches surname
+
+    for match in matches:
+        if match[0].casefold() == first_name.casefold():  # The given name also matches author first name
+            return True
+        if match[0][0].casefold() == first_name[0].casefold():  # The first initial matches author first name
+            return True
+
+
+def first_name_matches_surname_and_last_name_matches_given_name(existing_author_names, first_name, last_name):
+
+    matches = [n for n in existing_author_names if
+               n[1].casefold() == first_name.casefold()]  # First name matches surname
+
+    for match in matches:
+        if match[0].casefold() == last_name.casefold():  # The given name also matches author last name
+            return True
+
+
+def surname_matches_whole_author_name(existing_author_names, author):
+
+    surname_matches = [n for n in existing_author_names if n[1].casefold() == author.casefold()]
+    if len(surname_matches) > 0:
+        return True
+
+
+def given_name_matches_matches_whole_author_name(existing_author_names, author):
+
+    given_name_matches = [n for n in existing_author_names if n[0].casefold() == author.casefold()]
+    if len(given_name_matches) > 0:
+        return True
+
+
+def combined_name_matches_whole_author_name(existing_author_names, author):
+
+    combined_name_matches = [n for n in existing_author_names if
+                             (n[0] + n[1]).casefold() == author.casefold()]
+    if len(combined_name_matches) > 0:
+        return True
+
+
+def combined_name_reversed_matches(existing_author_names, author):
+
+    combined_name_reversed_matches = [n for n in existing_author_names if
+                                      (n[1] + n[0]).casefold() == author.casefold()]
+    if len(combined_name_reversed_matches) > 0:
+        return True
+
+
+def author_name_is_first_initial_and_surname_concatenated(existing_author_names, author):
+
+    first_character = author[0]
+    remaining_characters = author[1:]
+    matches = [n for n in existing_author_names if
+               n[1].casefold() == remaining_characters.casefold()]  # Second part of name matches surname
+    for match in matches:
+        if match[0][0].casefold() == first_character.casefold():  # The first initial matches author first name
+            return True
+
+
 def author_found_in_existing_authors(author, existing_authors):
 
     existing_author_names = [(unidecode(a.get("given-names")),
@@ -45,44 +107,27 @@ def author_found_in_existing_authors(author, existing_authors):
     first_name = unidecode(names[0].replace(",", ""))
     last_name = unidecode(names[-1])
 
-    matches = [n for n in existing_author_names if n[1].casefold() == last_name.casefold()]  # Last name matches surname
-    for match in matches:
-        if match[0].casefold() == first_name.casefold():  # The given name also matches author first name
-            return True
-        if match[0][0].casefold() == first_name[0].casefold():  # The first initial matches author first name
-            return True
-
-    matches = [n for n in existing_author_names if n[1].casefold() == first_name.casefold()]  # First name matches surname
-    for match in matches:
-        if match[0].casefold() == last_name.casefold():  # The given name also matches author last name
-            return True
-
-        surname_matches = [n for n in existing_author_names if n[1].casefold() == author.casefold()]
-        if len(surname_matches) > 0:
-            return True
-
-        given_name_matches = [n for n in existing_author_names if n[0].casefold() == author.casefold()]
-        if len(given_name_matches) > 0:
-            return True
-
-    combined_name_matches = [n for n in existing_author_names if
-                             (n[0] + n[1]).casefold() == author.casefold()]
-    if len(combined_name_matches) > 0:
+    if last_name_matches_surname_and_first_name_or_first_letter_matches_given_name(
+            existing_author_names, last_name, first_name):
         return True
 
-    combined_name_reversed_matches = [n for n in existing_author_names if
-                                      (n[1] + n[0]).casefold() == author.casefold()]
-    if len(combined_name_reversed_matches) > 0:
+    if first_name_matches_surname_and_last_name_matches_given_name(existing_author_names, first_name, last_name):
         return True
 
-    # Check if author name is first initial and surname concatenated
-    first_character = author[0]
-    remaining_characters = author[1:]
-    matches = [n for n in existing_author_names if
-               n[1].casefold() == remaining_characters.casefold()]  # Second part of name matches surname
-    for match in matches:
-        if match[0][0].casefold() == first_character.casefold():  # The first initial matches author first name
-            return True
+    if surname_matches_whole_author_name(existing_author_names, author):
+        return True
+
+    if given_name_matches_matches_whole_author_name(existing_author_names, author):
+        return True
+
+    if combined_name_matches_whole_author_name(existing_author_names, author):
+        return True
+
+    if combined_name_reversed_matches(existing_author_names, author):
+        return True
+
+    if author_name_is_first_initial_and_surname_concatenated(existing_author_names, author):
+        return True
 
     return False
 
