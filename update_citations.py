@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import NamedTuple
 from unidecode import unidecode
 import yaml
 
@@ -96,7 +97,6 @@ class ExistingAuthorNames:
 
 
 def author_found_in_existing_authors(author, existing_authors):
-
     existing_author_names = ExistingAuthorNames(existing_authors)
 
     names = author.split()
@@ -129,9 +129,17 @@ def author_found_in_existing_authors(author, existing_authors):
 
 
 def update_citations():
+
     existing_authors = get_authors_from_cff_file()
-    authors_to_exclude = [a for a in authors_from_git if "github" in a.casefold() or "dependabot" in a.casefold()]
-    authors_to_search_for = [a for a in authors_from_git if a not in authors_to_exclude]
+
+    nonhuman_authors = [a for a in authors_from_git if "github" in a.casefold() or "dependabot" in a.casefold()]
+
+    known_authors = [a for a in authors_from_git if a in KNOWN_AUTHORS]
+
+    human_authors = [a for a in authors_from_git if a not in nonhuman_authors]
+
+    authors_to_search_for = [a for a in human_authors if a not in known_authors]
+
     unrecognised_authors = [a for a in authors_to_search_for if
                             not author_found_in_existing_authors(a, existing_authors)]
 
@@ -139,6 +147,26 @@ def update_citations():
     for author in unrecognised_authors:
         print(author)
 
+
+class KnownAuthor(NamedTuple):
+    family_names: str
+    given_names: str
+
+
+KNOWN_AUTHORS = {"bendudson": KnownAuthor("Dodson", "Benjamin"),
+                 "brey": KnownAuthor("Breyiannis", "George"),
+                 "David Schwörer": KnownAuthor("Bold", "David"),
+                 "dschwoerer": KnownAuthor("Bold", "David"),
+                 "hahahasan": KnownAuthor("Muhammed", "Hasan"),
+                 "Ilon Joseph - x31405": KnownAuthor("Joseph", "Ilon"),
+                 "kangkabseok": KnownAuthor("Kang", "Kab Seok"),
+                 "loeiten": KnownAuthor("Løiten", "Michael"),
+                 "Michael Loiten Magnussen": KnownAuthor("Løiten", "Michael"),
+                 "Maxim Umansky - x26041": KnownAuthor("Umansky", "Maxim"),
+                 "nick-walkden": KnownAuthor("Walkden", "Nicholas"),
+                 "ZedThree": KnownAuthor("Hill", "Peter"),
+                 # "tomc271": KnownAuthor("Chapman", "Tom")
+                 }
 
 if __name__ == '__main__':
     update_citations()
