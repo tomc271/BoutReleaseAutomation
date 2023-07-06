@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import NamedTuple
 from unidecode import unidecode
 import yaml
 
@@ -148,24 +147,19 @@ def update_citations():
         print(author)
 
 
-class KnownAuthor(NamedTuple):
-    family_names: str
-    given_names: str
-
-
-KNOWN_AUTHORS = {"bendudson": KnownAuthor("Dodson", "Benjamin"),
-                 "brey": KnownAuthor("Breyiannis", "George"),
-                 "David Schwörer": KnownAuthor("Bold", "David"),
-                 "dschwoerer": KnownAuthor("Bold", "David"),
-                 "hahahasan": KnownAuthor("Muhammed", "Hasan"),
-                 "Ilon Joseph - x31405": KnownAuthor("Joseph", "Ilon"),
-                 "kangkabseok": KnownAuthor("Kang", "Kab Seok"),
-                 "loeiten": KnownAuthor("Løiten", "Michael"),
-                 "Michael Loiten Magnussen": KnownAuthor("Løiten", "Michael"),
-                 "Maxim Umansky - x26041": KnownAuthor("Umansky", "Maxim"),
-                 "nick-walkden": KnownAuthor("Walkden", "Nicholas"),
-                 "ZedThree": KnownAuthor("Hill", "Peter"),
-                 # "tomc271": KnownAuthor("Chapman", "Tom")
+KNOWN_AUTHORS = {"bendudson",
+                 "brey",
+                 "David Schwörer",
+                 "dschwoerer",
+                 "hahahasan",
+                 "Ilon Joseph - x31405",
+                 "kangkabseok",
+                 "loeiten",
+                 "Michael Loiten Magnussen",
+                 "Maxim Umansky - x26041",
+                 "nick-walkden",
+                 "ZedThree",
+                 # "tomc271"
                  }
 
 if __name__ == '__main__':
