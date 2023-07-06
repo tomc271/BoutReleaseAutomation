@@ -39,41 +39,40 @@ def author_found_in_existing_authors(author, existing_authors):
 
     existing_author_names = [(a.get("given-names"), a.get("family-names")) for a in existing_authors]
 
-    try:
-        given_names, surname = author.split()
-        matches = [n for n in existing_author_names if n[1].casefold() == surname.casefold()]
-        for match in matches:
-            if match[0].casefold() == given_names.casefold():  # The given name also matches
-                return True
-            if match[0][0].casefold() == given_names[0].casefold():  # The first initial also matches
-                return True
-        matches = [n for n in existing_author_names if n[0].casefold() == surname.casefold()]  # Surname first
-        for match in matches:
-            if match[0].casefold() == surname.casefold():
-                return True
+    names = author.split()
+    first_name = names[0]
+    last_name = names[-1]
 
-    except ValueError as value_error:  # Only a single name, so could not split()
+    matches = [n for n in existing_author_names if n[1].casefold() == last_name.casefold()]  # Last name matches surname
+    for match in matches:
+        if match[0].casefold() == first_name.casefold():  # The given name also matches author first name
+            return True
+        if match[0][0].casefold() == first_name[0].casefold():  # The first initial matches author first name
+            return True
 
-        if value_error.args[0] == "not enough values to unpack (expected 2, got 1)":
+    matches = [n for n in existing_author_names if n[0].casefold() == first_name.casefold()]  # First name matches surname
+    for match in matches:
+        if match[0].casefold() == last_name.casefold():  # The given name also matches author last name
+            return True
 
-            surname_matches = [n for n in existing_author_names if n[1].casefold() == author.casefold()]
-            if len(surname_matches) > 0:
-                return True
+        surname_matches = [n for n in existing_author_names if n[1].casefold() == author.casefold()]
+        if len(surname_matches) > 0:
+            return True
 
-            given_name_matches = [n for n in existing_author_names if n[0].casefold() == author.casefold()]
-            if len(given_name_matches) > 0:
-                return True
+        given_name_matches = [n for n in existing_author_names if n[0].casefold() == author.casefold()]
+        if len(given_name_matches) > 0:
+            return True
 
-            combined_name_matches = [n for n in existing_author_names if
-                                     (n[0] + n[1]).casefold() == author.casefold()]
-            if len(combined_name_matches) > 0:
-                return True
+    combined_name_matches = [n for n in existing_author_names if
+                             (n[0] + n[1]).casefold() == author.casefold()]
+    if len(combined_name_matches) > 0:
+        return True
 
-            combined_name_reversed_matches = [n for n in existing_author_names if
-                                              (n[1] + n[0]).casefold() == author.casefold()]
-            if len(combined_name_reversed_matches) > 0:
-                return True
-    
+    combined_name_reversed_matches = [n for n in existing_author_names if
+                                      (n[1] + n[0]).casefold() == author.casefold()]
+    if len(combined_name_reversed_matches) > 0:
+        return True
+
     return False
 
 
