@@ -130,11 +130,14 @@ def author_found_in_existing_authors(author, existing_authors):
 
 def update_citations():
     existing_authors = get_authors_from_cff_file()
-    for author in authors_from_git:
-        if "github" in author.casefold() or "dependabot" in author.casefold():
-            continue
-        if not author_found_in_existing_authors(author, existing_authors):
-            print(author, "not found. Add to citations?")
+    authors_to_exclude = [a for a in authors_from_git if "github" in a.casefold() or "dependabot" in a.casefold()]
+    authors_to_search_for = [a for a in authors_from_git if a not in authors_to_exclude]
+    unrecognised_authors = [a for a in authors_to_search_for if
+                            not author_found_in_existing_authors(a, existing_authors)]
+
+    print("The following authors were not recognised. Add to citations?")
+    for author in unrecognised_authors:
+        print(author)
 
 
 if __name__ == '__main__':
