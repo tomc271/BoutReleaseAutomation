@@ -1,4 +1,5 @@
 from pathlib import Path
+from unidecode import unidecode
 import yaml
 
 authors_from_git = ["A Allen", "Aaron Fisher", "Adam Dempsey", "Andrew Allen", "arkabokshi", "Ben Dudson", "bendudson",
@@ -37,11 +38,12 @@ def get_authors_from_cff_file():
 
 def author_found_in_existing_authors(author, existing_authors):
 
-    existing_author_names = [(a.get("given-names"), a.get("family-names")) for a in existing_authors]
+    existing_author_names = [(unidecode(a.get("given-names")),
+                              unidecode(a.get("family-names"))) for a in existing_authors]
 
     names = author.split()
-    first_name = names[0].replace(",", "")
-    last_name = names[-1]
+    first_name = unidecode(names[0].replace(",", ""))
+    last_name = unidecode(names[-1])
 
     matches = [n for n in existing_author_names if n[1].casefold() == last_name.casefold()]  # Last name matches surname
     for match in matches:
