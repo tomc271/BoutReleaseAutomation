@@ -50,7 +50,7 @@ def author_found_in_existing_authors(author, existing_authors):
         if match[0][0].casefold() == first_name[0].casefold():  # The first initial matches author first name
             return True
 
-    matches = [n for n in existing_author_names if n[0].casefold() == first_name.casefold()]  # First name matches surname
+    matches = [n for n in existing_author_names if n[1].casefold() == first_name.casefold()]  # First name matches surname
     for match in matches:
         if match[0].casefold() == last_name.casefold():  # The given name also matches author last name
             return True
