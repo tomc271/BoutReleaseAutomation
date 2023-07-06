@@ -79,6 +79,8 @@ def author_found_in_existing_authors(author, existing_authors):
 def update_citations():
     existing_authors = get_authors_from_cff_file()
     for author in authors_from_git:
+        if "github" in author.casefold():
+            continue
         if not author_found_in_existing_authors(author, existing_authors):
             print(author, "not found. Add to citations?")
 
