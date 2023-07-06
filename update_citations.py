@@ -75,6 +75,15 @@ def author_found_in_existing_authors(author, existing_authors):
     if len(combined_name_reversed_matches) > 0:
         return True
 
+    # Check if author name is first initial and surname concatenated
+    first_character = author[0]
+    remaining_characters = author[1:]
+    matches = [n for n in existing_author_names if
+               n[1].casefold() == remaining_characters.casefold()]  # Second part of name matches surname
+    for match in matches:
+        if match[0][0].casefold() == first_character.casefold():  # The first initial matches author first name
+            return True
+
     return False
 
 
