@@ -1,22 +1,47 @@
+import platform
+import subprocess
 from pathlib import Path
 from unidecode import unidecode
 import yaml
 
-authors_from_git = ["A Allen", "Aaron Fisher", "Adam Dempsey", "Andrew Allen", "arkabokshi", "Ben Dudson", "bendudson",
-                    "Benjamin Dudson", "Brendan", "Brendan Shanahan", "Brett Friedman", "brey", "BS", "bshanahan",
-                    "Chenhao Ma", "Chris MacMackin", "D Dickinson", "David", "David Bold", "David Dickinson",
-                    "David Schwörer", "dependabot[bot]", "Dmitry Feliksovich Meyerson", "Dmitry Meyerson", "dschwoerer",
-                    "Eric Medwedeff", "Erik Grinaker", "Fabio Riva", "George Breyiannis", "GitHub Merge Button",
-                    "github-actions[bot]", "hahahasan", "Haruki Seto", "Haruki SETO", "holger", "Holger Jones",
-                    "Hong Zhang", "Ilon Joseph", "Ilon Joseph - x31405", "Jarrod Leddy", "JB Leddy", "j-b-o",
-                    "Jed Brown", "Jens Madsen", "John Omotani", "johnomotani", "jonesholger", "Joseph Parker",
-                    "Joshua Sauppe", "Kab Seok Kang", "kangkabseok", "Kevin Savage", "Licheng Wang", "loeiten",
-                    "Luke Easy", "M Leconte", "M V Umansky", "Marta Estarellas", "Matt Thomas", "Maxim Umansky",
-                    "Maxim Umansky - x26041", "Michael Løiten", "Michael Loiten Magnussen", "Minwoo Kim",
-                    "Nicholas Walkden", "Nick Walkden", "nick-walkden", "Olivier Izacard", "Pengwei Xi", "Peter Hill",
-                    "Peter Naylor", "Qin, Yining", "Sajidah Ahmed", "Sanat Tiwari", "Sean Farley", "seanfarley",
-                    "Seto Haruki", "Simon Myers", "Tianyang Xia", "Toby James", "tomc271", "Tongnyeol Rhee",
-                    "Xiang Liu", "Xinliang Xu", "Xueqiao Xu", "Yining Qin", "ZedThree", "Zhanhui Wang"]
+
+def get_authors_from_git():
+
+    repo_path = r"C:\git\BOUT-dev"
+
+    # directory = subprocess.run(["cd", repo_path], shell=True, capture_output=True)
+    subprocess.run(["cd", repo_path], shell=True)
+
+
+    # output = subprocess.run([r'C:\Program Files\Git\bin\bash.exe', 'cd', r'C:\git\BOUT-DEV'],
+    output = subprocess.run(['cd', r'C:\git\BOUT-DEV'],
+                            # shell=True,
+                            capture_output=True,
+                            executable=r'C:\Program Files\Git\bin\bash.exe')
+
+
+    print(output.stdout) if output.stdout else print(output.stderr)
+
+    os = platform.system()
+    if os == 'Windows':
+        output = subprocess.run(["git", "log", "--format='%aN'", "| sort", "| uniq"],
+                                # shell=True,
+                                capture_output=True,
+                                executable=r'C:\Program Files\Git\git-bash.exe')
+    else:
+        output = subprocess.run(["git", "log", "--format='%aN'", "| sort", "| uniq"],
+                                # shell=True,
+                                capture_output=True,
+                                executable='/bin/bash')
+    # # output = subprocess.run(["git", "log", "--format='%aN'"])
+    # # "--format='%aN'", "| sort", "| uniq"], capture_output=True)
+    # process1 = subprocess.Popen(("git", "log"), stdout=subprocess.PIPE)
+    # process2 = subprocess.Popen("sort", stdin=process1.stdout, stdout=subprocess.PIPE)
+    # # output = subprocess.Popen("uniq", stdin=process1.stdout)
+    # output = subprocess.run('uniq', stdin=process2.stdout, capture_output=True)
+    # # output = subprocess.check_output(('uniq', 'process_name'), stdin=process1.stdout)
+    # print(output)
+    return output.stdout
 
 
 def parse_cff_file(filename):
@@ -163,4 +188,6 @@ KNOWN_AUTHORS = {"bendudson",
                  }
 
 if __name__ == '__main__':
+
+    authors_from_git = get_authors_from_git()
     update_citations()
